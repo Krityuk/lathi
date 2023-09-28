@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "41144261320",
+    "firebase_url": "https://laathi-app-default-rtdb.firebaseio.com",
+    "project_id": "laathi-app",
+    "storage_bucket": "laathi-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:41144261320:android:deb2bef45e32bd10fd23fd",
+        "android_client_info": {
+          "package_name": "com.techshy.laathi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "41144261320-eil133khdtp2mmba2q9l64t1ce102j0m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.techshy.laathi",
+            "certificate_hash": "1c3026109e40ad35f3d40e2d3030838b43fe6284"
+          }
+        },
+        {
+          "client_id": "41144261320-out2lpoj09aj6vdgiaof72rh5iou2tam.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH6hUJKMFkmCIY-IMHXFJmTko2zRusyOo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "41144261320-out2lpoj09aj6vdgiaof72rh5iou2tam.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "41144261320-fv8okkk1qgir316obv1gmn9jn4mpo17c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.project"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
