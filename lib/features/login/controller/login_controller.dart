@@ -10,22 +10,24 @@ final authControllerProvider = Provider(
   ),
 );
 
-
 //  Controller for auth functions
 class AuthController {
   final AuthRepository authRepository;
   AuthController({
     required this.authRepository,
   });
-   sendOTP(BuildContext context, String phone) {
-     authRepository.signInWithPhone(context, phone, false);
+  sendOTP(BuildContext context, String phone) {
+    authRepository.signInWithPhone(context, phone, false);
   }
-  void resendOTP(BuildContext context){
+
+  void resendOTP(BuildContext context) {
     authRepository.resendOTP(context);
   }
-  void verifyOTP(BuildContext context, String userOTP){
+
+  void verifyOTP(BuildContext context, String userOTP) {
     authRepository.verifyOTP(context, userOTP);
   }
+
   User? get currentUser => authRepository.currentUser;
   Future logOutUser(BuildContext context) async {
     await authRepository.logOutUser(context);

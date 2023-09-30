@@ -25,46 +25,48 @@ class CustomIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return InkWell(
-      onTap: () {
-        if (onPressed != null) {
-          onPressed!(context, ref);
-        } else if (arguments != null) {
-          Navigator.pushNamed(context, functionRoute!, arguments: arguments)
-              .then((value) {
-            callback;
-          });
-        } else {
-          Navigator.pushNamed(context, functionRoute!).then((value) {
-            callback;
-          });
-        }
-      },
-      child: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              color: iconColor,
-              borderRadius: BorderRadius.circular(15),
+    return FittedBox(  // ! *****************************************************************************
+      child: InkWell(
+        onTap: () {
+          if (onPressed != null) {
+            onPressed!(context, ref);
+          } else if (arguments != null) {
+            Navigator.pushNamed(context, functionRoute!, arguments: arguments)
+                .then((value) {
+              callback;
+            });
+          } else {
+            Navigator.pushNamed(context, functionRoute!).then((value) {
+              callback;
+            });
+          }
+        },
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: iconColor,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: SvgPicture.asset(
+                iconPath,
+                colorFilter:
+                    const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                semanticsLabel: iconLabel,
+                height: 100,
+                width: 100,
+              ),
             ),
-            child: SvgPicture.asset(
-              iconPath,
-              colorFilter:
-                  const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-              semanticsLabel: iconLabel,
-              height: 100,
-              width: 100,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              iconTitle,
-              style: const TextStyle(fontSize: 25),
-            ),
-          )
-        ],
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                iconTitle,
+                style: const TextStyle(fontSize: 25),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

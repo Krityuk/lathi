@@ -85,6 +85,7 @@ class OTPScreen extends ConsumerWidget {
                     decoration: const InputDecoration(
                       hintText: '- - - - - -',
                     ),
+                    maxLength: 6,
                     keyboardType: TextInputType.number,
                     controller: otpController,
                   ),

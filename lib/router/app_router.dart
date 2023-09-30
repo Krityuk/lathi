@@ -16,6 +16,8 @@ import 'package:laathi/features/medicine_reminder/screens/medicine_home_screen.d
 import 'package:laathi/features/services/screens/services_screen.dart';
 import 'package:laathi/features/services/utils/send_message.dart';
 
+import '../features/companion/screens/confirm_request_screem.dart';
+
 //  Switch casing the routes
 
 //  Each screen class has a static String variable called routeName
@@ -45,6 +47,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const LoginStatusChecker());
     case CompanionLandingPage.routeName:
       return MaterialPageRoute(builder: (_) => const CompanionLandingPage());
+
+    case ConfirmScreenReqSent.routeName:
+      return MaterialPageRoute(builder: (_) => const ConfirmScreenReqSent());
+
     case ConfirmScreen.routeName:
       var args = settings.arguments as List<Object?>;
       var newA = args[0] as List<String>;
@@ -63,11 +69,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (_) => ChatScreen(uid: args[0], uname: args[1]));
     case ChatHomeScreen.routeName:
       return MaterialPageRoute(builder: (_) => const ChatHomeScreen());
+    //
     case SendMessage.routeName:
       final args = settings.arguments as List<Object?>;
       return MaterialPageRoute(
           builder: (_) =>
               SendMessage(args[0]! as List<String>, args[1]! as bool));
+    //
+    //
     case WishboxRecorderScreen.routeName:
       return MaterialPageRoute(builder: (_) => const WishboxRecorderScreen());
     case LogsScreen.routeName:

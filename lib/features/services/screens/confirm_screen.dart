@@ -19,6 +19,15 @@ class ConfirmScreen extends ConsumerWidget {
       required this.isChat})
       : super(key: key);
 
+  // ! information variable is having the last message of the buddha
+  // ! location variable is having the location of the buddha
+
+  //! in tapping location button var information is '[location]'
+  //! in tapping location button var location is  location of the buddha
+
+  //! in tapping otp button var location is null
+  //! in tapping otp button var information is last msg
+
   Future<void> showMyDialog(BuildContext context, String alert) async {
     return await showDialog(
       context: context,
@@ -58,8 +67,8 @@ class ConfirmScreen extends ConsumerWidget {
             ElevatedButton(
               onPressed: () {
                 debugPrint(
-                    'k$information information here       😎😎😎😎😎😎😎😎');
-                debugPrint('k$location location here       😎😎');
+                    '$information   is the information here       😎😎😎😎😎😎😎😎');
+                debugPrint('->$location     is the location here       😎😎');
               },
               child: const Text(
                   'print msg to sent'), // Text displayed on the button
@@ -79,7 +88,8 @@ class ConfirmScreen extends ConsumerWidget {
                     onPressed: () async {
                       await ref
                           .watch(chatRepositoryProvider)
-                          .sendMessage(information, userId)
+                          .sendMessage("$information : $location", userId)
+                          // .sendMessage(information, userId)
                           .then((_) async {
                         ref
                             .watch(notificationRepositoryProvider)

@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:laathi/features/companion/Repository/companion_repository.dart';
 import 'package:laathi/features/services/repository/services_repository.dart';
 
+import '../globals/globals.dart';
+
 // Function to manipulate the messages to a WhatsApp link which in turn will
 // be converted to a whatsapp message (for now).
 
@@ -21,6 +23,8 @@ class SendMessage extends ConsumerStatefulWidget {
   ConsumerState<SendMessage> createState() => _SendMessageScreenState();
 }
 
+//!messeges is the all messages
+//!messages[0] indicates the purpose of the list, as we had to sent the last message
 class _SendMessageScreenState extends ConsumerState<SendMessage> {
   @override
   Widget build(BuildContext context) {
@@ -62,6 +66,8 @@ class _SendingContactsListState extends ConsumerState<SendingContactsList> {
               child: CircularProgressIndicator(),
             ),
           ),
+          //! bool isLoading is made because contact screen par hi grid view me provider list dikha rhe at isLoading=false
+          //! and also contact screen par hi circleAvatar dikha rhe when isLoading=true
           Opacity(
             opacity: isLoading ? 0 : 1,
             child: IgnorePointer(
@@ -126,23 +132,40 @@ class _SendingContactsListState extends ConsumerState<SendingContactsList> {
                                           // ON doing ontap for one sec isLoading becomes true and then after this read and jumptoPage fn isLoading again becomes false
                                           setState(() {
                                             isLoading = true;
-                                            debugPrint(
-                                                'provider got tapped here       😎😎😎😎😎😎😎😎');
-                                            debugPrint(
-                                                '${widget.messages}       😎😎😎😎😎😎😎😎');
-                                                debugPrint('       😎😎😎😎😎😎😎😎');
+                                            //! circleAvatar started at this page and then page got pushed to confirmScreenPage
                                           });
-                                          await ref
-                                              .read(serviceRepositoryProvider)
-                                              .jumpToPage(
-                                                  userId, //providerID
-                                                  widget.messages,
-                                                  userName, //providerName
+                                          if (widget.companionMode) {
+                                            debugPrint(
+                                                'companion $userName got tapped here  😎😎');
+                                            //
+                                            Global.beneficiaryId = userId;
+                                            //currnt user jisko beneficiate kr rha us buddhe ki id hai ye
+                                            Global.beneficiaryName = userName;
+                                            await ref
+                                                .read(serviceRepositoryProvider)
+                                                .jumpToRequestOTPPage(
                                                   context,
                                                   ref,
-                                                  false);
+                                                );
+                                          } else {
+                                            // it is widget.userMode
+                                            debugPrint(
+                                                'provider $userName got tapped here  😎😎');
+                                            debugPrint(
+                                                '${widget.messages}    is messages, at senderScreen 😎😎');
+                                            await ref
+                                                .read(serviceRepositoryProvider)
+                                                .jumpToPage(
+                                                    userId, //providerID
+                                                    widget.messages,
+                                                    userName, //providerName
+                                                    context,
+                                                    ref,
+                                                    false);
+                                          }
                                           setState(() {
                                             isLoading = false;
+                                            //! circleavatar again got started
                                           });
                                         },
                                       ),

@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:laathi/features/login/screens/number_screen.dart';
 import 'package:laathi/utils/show_bar.dart';
+
 import 'package:laathi/repository/app_repository.dart';
 import 'package:laathi/features/login/screens/permission_screen.dart';
 import 'package:laathi/features/login/screens/otp_screen.dart';
@@ -90,7 +92,7 @@ class AuthRepository {
           // ignore: use_build_context_synchronously
           Navigator.pushReplacementNamed(context, HomeBottomScreen.routeName);
         } else {
-          await databaseRepository.registerUser(auth.currentUser!, "");
+          await databaseRepository.registerUser(auth.currentUser!, "fullName");
           // ignore: use_build_context_synchronously
           Navigator.pushNamedAndRemoveUntil(
             context,
@@ -110,8 +112,10 @@ class AuthRepository {
   Future logOutUser(BuildContext context) async {
     try {
       await auth.signOut().then((_) {
-        Navigator.pushReplacementNamed(context, LoginStatusChecker.routeName);
-        // databaseRepository.logoutCurrentUser();
+        // Navigator.pushReplacementNamed(context, LoginStatusChecker.routeName);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            LoginStatusChecker.routeName, (route) => false);
+        databaseRepository.logoutCurrentUser();
       });
     } catch (e) {
       showSnackBar(context: context, content: e.toString());

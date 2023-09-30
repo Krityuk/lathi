@@ -5,6 +5,8 @@ import 'package:laathi/utils/show_bar.dart';
 import 'package:laathi/features/companion/controller/companion_controller.dart';
 import 'package:laathi/features/home/screens/home_bottom_screen.dart';
 
+import '../../../utils/constants.dart';
+
 class AddCompanionScreen extends ConsumerStatefulWidget {
   static const routeName = '/add-companion';
   const AddCompanionScreen({Key? key}) : super(key: key);
@@ -18,8 +20,17 @@ class _AddCompScreenState extends ConsumerState<AddCompanionScreen> {
   final nameController = TextEditingController();
 
   //  Country for country phone code
-  Country country = Country(phoneCode: "91", countryCode: "IN", e164Sc: 0, geographic: true, level: 1, name: "India", example: "9123456789", displayName: "India (IN) [+91]", displayNameNoCountryCode: "India (IN)", e164Key: "91-IN-0");
-
+  Country country = Country(
+      phoneCode: "91",
+      countryCode: "IN",
+      e164Sc: 0,
+      geographic: true,
+      level: 1,
+      name: "India",
+      example: "9123456789",
+      displayName: "India (IN) [+91]",
+      displayNameNoCountryCode: "India (IN)",
+      e164Key: "91-IN-0");
 
   @override
   void dispose() {
@@ -44,15 +55,19 @@ class _AddCompScreenState extends ConsumerState<AddCompanionScreen> {
   void addCompanion() async {
     String phone = "+${country.phoneCode}${phoneController.text.trim()}";
     String name = nameController.text.trim();
-    if (phone.isNotEmpty && name.isNotEmpty) {
-      await ref.watch(companionControllerProvider).setCompanion(name, phone, context);
-      jumpToHomeScreen();
+    if (phoneController.text.isNotEmpty && name.isNotEmpty) {
+      await ref
+          .watch(companionControllerProvider)
+          .setCompanion(name, phone, context)
+          .then((value) {
+        jumpToHomeScreen();
+      });
     } else {
       showSnackBar(context: context, content: 'Fill out all the fields!');
     }
   }
 
-  void jumpToHomeScreen(){
+  void jumpToHomeScreen() {
     Navigator.pushReplacementNamed(context, HomeBottomScreen.routeName);
   }
 
@@ -167,10 +182,10 @@ class _AddCompScreenState extends ConsumerState<AddCompanionScreen> {
                     ),
                     Row(
                       children: [
-                          Padding(
-                            padding: const EdgeInsets.only(top: 2.5),
-                            child: Text('+${country.phoneCode}'),
-                          ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2.5),
+                          child: Text('+${country.phoneCode}'),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 10.0),
                           child: SizedBox(
@@ -179,6 +194,7 @@ class _AddCompScreenState extends ConsumerState<AddCompanionScreen> {
                               focusNode: FocusNode(),
                               controller: phoneController,
                               keyboardType: TextInputType.phone,
+                              maxLength: 10,
                               decoration: const InputDecoration(
                                 hintText: 'phone number',
                               ),
@@ -196,7 +212,11 @@ class _AddCompScreenState extends ConsumerState<AddCompanionScreen> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 50.0, bottom: 50.0),
                         child: ElevatedButton(
-                          onPressed:  () async => addCompanion(),
+                          onPressed: () async {
+                            loadingDialogBox(context,
+                                'Validating details'); //! I added this line here
+                            addCompanion();
+                          },
                           style: ElevatedButton.styleFrom(
                             shadowColor: const Color.fromARGB(255, 36, 36, 36),
                             elevation: 3.5,

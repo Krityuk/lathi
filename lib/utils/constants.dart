@@ -52,3 +52,30 @@ loadingDialogBox(BuildContext context, String loadingMessage) {
         return alertBox;
       });
 }
+
+wrongDetailsAlertBox(String text, BuildContext context) {
+  AlertDialog alert = AlertDialog(
+    content: Text(
+      text,
+      style: const TextStyle(
+        color: Colors.blue,
+      ),
+    ),
+    actions: [
+      TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text(
+            'Ok',
+          )),
+    ],
+  );
+
+  showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      });
+}

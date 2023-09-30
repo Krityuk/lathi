@@ -31,8 +31,10 @@ class ChatRepository {
     });
   }
 
-  Future<void> sendMessage(String message, String user) async {
-    QuerySnapshot snap = await databaseRepository.fetchMessages(user);
+  Future<void> sendMessage(String message, String userId) async {
+    QuerySnapshot snap = await databaseRepository.fetchMessages(userId);
+    // !snap is having all the docs of chat collection in which 1.currentUserUid && 2.tapped provider/beneficiery ka uid is present
+    //neeche me snap.docs[0] likhna pada instead of snaps.docs because firebase would think like there are so many docs where these both uids are present. so we are taking the first doc among them
     chatCollection.doc(snap.docs[0].id).collection('messages').doc().set({
       'type': 'text',
       'content': message,

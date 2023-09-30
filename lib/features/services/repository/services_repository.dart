@@ -4,17 +4,29 @@ import 'package:geolocator/geolocator.dart';
 import 'package:laathi/features/notification/models/notification_model.dart';
 import 'package:laathi/features/services/screens/confirm_screen.dart';
 
+import '../../companion/screens/confirm_request_screem.dart';
+
 final serviceRepositoryProvider = Provider((ref) => ServiceRepository());
 
 class ServiceRepository {
   Future jumpToPage(String userId, List<String> messages, String userName,
-      BuildContext context, WidgetRef ref, bool chat) async {
-    debugPrint('$messages  its coming here 😎😎');
+      BuildContext context, WidgetRef ref, bool isChat) async {
+    debugPrint('$messages  is the messages 😎😎');
     await _send(userId, messages, userName, context, ref).then((value) {
-      debugPrint('$value     it is value  😎😎😎😎😎😎😎😎');
+      debugPrint('$value     it is value  😎😎😎');
       Navigator.pushNamed(context, ConfirmScreen.routeName,
-          arguments: [value,chat,messages]);
+          arguments: [value, isChat, messages]);
     });
+  }
+
+  Future jumpToRequestOTPPage(
+    BuildContext context,
+    WidgetRef ref,
+  ) async {
+    Navigator.pushNamed(
+      context,
+      ConfirmScreenReqSent.routeName,
+    );
   }
 
   Future<List<String>> _send(String userId, List<String> messages,

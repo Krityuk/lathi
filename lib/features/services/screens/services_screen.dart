@@ -47,7 +47,7 @@ class ServicesScreen extends ConsumerWidget {
                 //  'location' as the value to indicate the location sharing operation
                 arguments: const [
                   ['location'],
-                  false
+                  false //! false indicates companionMode=false here
                 ],
               ),
               FutureBuilder(
@@ -58,6 +58,7 @@ class ServicesScreen extends ConsumerWidget {
                   iconTitle: 'OTP',
                   functionRoute: SendMessage.routeName,
                   arguments: [snapshot.data, false],
+                  //! false indicates companionMode=false here
                 ),
               ),
               CustomIcon(

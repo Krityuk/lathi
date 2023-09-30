@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:laathi/features/companion/repository/companion_repository.dart';
 import 'package:laathi/utils/show_bar.dart';
 import 'package:flutter/material.dart';
+
+// import '../utils/constants.dart';
 
 final appRepositoryProvider = Provider((ref) => AppRepository(
       firebaseFirestore: FirebaseFirestore.instance,
@@ -63,6 +66,22 @@ class AppRepository {
       String id = await getUserId(phoneNumber);
       // ignore: avoid_print
       print(id);
+      String currentUserName = "fullNameXYZ";
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .get()
+          .then((value) => {currentUserName = value['fullName']});
+
+      // if already a companion exist with this no then dont add the companion again
+      QuerySnapshot<Map<String, dynamic>> snapshot = await currentUserDocument
+          .collection('providers')
+          .where('phone', isEqualTo: phoneNumber)
+          .get();
+      if (snapshot.docs.isNotEmpty) {
+        return;
+      }
+
       if (id != "" && id != currentUser!.phoneNumber) {
         // updating into providers collection
         await currentUserDocument
@@ -72,25 +91,37 @@ class AppRepository {
         //***************************************************************************** */
         // updating into beneficicaries collection
         // UPDATED CODE HERE BY ME
+        debugPrint('$currentUserName   is the currentUserName    😎😎');
         await userCollection.doc(id).collection('beneficiaries').add(
           {
             // YAHA NAME WOULD COME
-            'name': currentUser!.phoneNumber,
+            'name': currentUserName,
             'phone': currentUser!.phoneNumber,
             'id': currentUser!.uid
           },
         );
+        //
         QuerySnapshot snap = await fetchMessages(id);
+        String? senderName;
+        userCollection.doc(currentUser!.uid).get().then((value) {
+          senderName = value['fullName'];
+        });
         if (snap.size == 0) {
           await chatCollection.doc().set(
             {
               'users': [currentUser!.uid, id],
-              'names': {id: name}
+              'names': [
+                {id: name},
+                {currentUser!.uid, senderName}
+              ]
             },
           );
         } else {
           await chatCollection.doc(snap.docs[0].id).set({
-            'names': {id: name}
+            'names': [
+              {id: name},
+              {currentUser!.uid, senderName}
+            ]
           }, SetOptions(merge: true));
         }
       } else {
